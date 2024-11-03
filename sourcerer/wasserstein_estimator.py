@@ -20,6 +20,7 @@ def train_source(
     min_epochs_x_chus=500,
     early_stopping_patience=50,
     device="cpu",
+    print_every=10,
 ):
     """
     Trains the source model by minimizing the wasserstein distance with an entropy maximization term. Currently only implemented for uniform reference distributions!
@@ -95,7 +96,7 @@ def train_source(
             else:
                 print("Warning: NaN or Inf loss encountered, skipping step!")
 
-            if epoch_x_chu % 10 == 0:
+            if epoch_x_chu % print_every == 0:
                 print(
                     f"Epoch x Chunk: {epoch_x_chu}, Weighted Loss: {loss.item()}, "
                     f"Entropy loss: {entropy_loss.item()}, "
