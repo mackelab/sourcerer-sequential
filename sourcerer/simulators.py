@@ -364,3 +364,27 @@ class LotkaVolterraSimulator:
 
     def eval(self):
         pass
+
+class GaussianMixtureSimulator:
+    def __init__(self):
+        self.xdim = 2
+        self.ydim = 2
+        self.device = "cpu"
+
+    def to(self, device):
+        self.device = device
+        return self
+
+    def sample_prior(self, size):
+        return 0.5 * torch.rand(size, self.xdim, device=self.device) + 0.5
+
+    def sample(self, context):
+        rand_ints = torch.randint(0, 2, (context.shape[0],))
+        vector = torch.where(rand_ints == 0, 0.1, 1.0).unsqueeze(1).to(self.device)
+        return context + vector * torch.randn(context.shape, device=self.device)
+
+    def train(self):
+        pass
+
+    def eval(self):
+        pass
