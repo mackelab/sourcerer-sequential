@@ -1,0 +1,9 @@
+self: naive 
+
+total_simulation_budget: 2000
+number_of_iterations: 2 
+subsampling: false
+collate_last_iter_data: false
+lambda_stays_same: true # keeps lambda fixed at fin_lambda for next iterations
+frontloading: false     # have more training samples for surrogate in the first iteration
+front_frac: 0.3         # use front_frac*budget samples in first iteration if frontloading is true

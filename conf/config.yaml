@@ -4,3 +4,4 @@ defaults:
   - surrogate: no_surrogate
   - source_model: sampler
   - source: wasserstein
+  - sequential: naive 
