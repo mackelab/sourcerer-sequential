@@ -1,0 +1,18 @@
+sbatch sequential_naive_benchmark.sh inverse_kinematics 34358
+sbatch sequential_naive_benchmark.sh inverse_kinematics 12235
+sbatch sequential_naive_benchmark.sh inverse_kinematics 9656
+sbatch sequential_naive_benchmark.sh inverse_kinematics 3828
+sbatch sequential_naive_benchmark.sh inverse_kinematics 54973
+
+sbatch sequential_naive_benchmark.sh two_moons 50134
+sbatch sequential_naive_benchmark.sh two_moons 12235
+sbatch sequential_naive_benchmark.sh two_moons 9656
+sbatch sequential_naive_benchmark.sh two_moons 3828
+sbatch sequential_naive_benchmark.sh two_moons 54973
+
+sbatch sequential_naive_benchmark.sh slcp 20367
+sbatch sequential_naive_benchmark.sh slcp 12235
+sbatch sequential_naive_benchmark.sh slcp 9656
+sbatch sequential_naive_benchmark.sh slcp 3828
+sbatch sequential_naive_benchmark.sh slcp 54973
+

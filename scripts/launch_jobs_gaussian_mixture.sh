@@ -1,0 +1,5 @@
+sbatch sequential_naive_benchmark_gaussian_mixture.sh gaussian_mixture 34358
+sbatch sequential_naive_benchmark_gaussian_mixture.sh gaussian_mixture 12235
+sbatch sequential_naive_benchmark_gaussian_mixture.sh gaussian_mixture 9656
+sbatch sequential_naive_benchmark_gaussian_mixture.sh gaussian_mixture 3828
+sbatch sequential_naive_benchmark_gaussian_mixture.sh gaussian_mixture 54973
