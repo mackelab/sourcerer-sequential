@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=8          # Number of CPU cores per task
 #SBATCH --nodes=1                  # Ensure that all cores are on the same machine with nodes=1
 #SBATCH --partition=2080-galvani   # Which partition will run your job
-#SBATCH --time=1-01:05             # Allowed runtime in D-HH:MM
+#SBATCH --time=1-10:05             # Allowed runtime in D-HH:MM
 #SBATCH --gres=gpu:1               # (optional) Requesting type and number of GPUs
 #SBATCH --mem=50G                  # Total memory pool for all cores (see also --mem-per-cpu); exceeding this number will cause your job to fail.
 #SBATCH --output=/mnt/qb/work/macke/mwe102/sourcerer-sequential/results_sourcerer/myjob-%j.out      # File to which STDOUT will be written - make sure this is not on $HOME
