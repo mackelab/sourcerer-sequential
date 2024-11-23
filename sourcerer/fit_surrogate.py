@@ -114,3 +114,28 @@ def fit_conditional_normalizing_flow(
                 break
 
     return training_loss, validation_loss
+
+
+# new utility functions used in the naive sequential version
+def generate_data_for_surrogate(simulator, domain_distribution, number):
+    surro_theta = domain_distribution.sample(number).detach()
+    surro_push_forward = simulator.sample(surro_theta)
+    return surro_theta, surro_push_forward # freshly sampled (theta, y) pairs to train surrogate
+
+def train_val_split(y, x, validation_size=0.2, random_state=0):
+    """ y: pushforward
+        x: parameters/thetas
+    """
+    train_y, val_y, train_x, val_x = train_test_split(
+        y, x, test_size=validation_size, random_state=random_state
+    )
+    return (train_y, train_x), (val_y, val_x)
+
+def create_dataloader(y, x, batch_size=256):
+    """ y: pushforward
+        x: parameters/thetas
+    """
+    data_loader = DataLoader(
+        TensorDataset(y, x), batch_size=batch_size, shuffle=True
+    )
+    return data_loader

@@ -8,6 +8,9 @@ from omegaconf import OmegaConf as OC
 from sourcerer.fit_surrogate import (
     create_train_val_dataloaders,
     fit_conditional_normalizing_flow,
+    generate_data_for_surrogate,
+    train_val_split,
+    create_dataloader
 )
 
 from sourcerer.likelihood_estimator import train_lml_source
@@ -273,15 +276,44 @@ surro_train_domain_distribution = box_domain  # initialization
 
 # start loop here, don't initialize surrogate again!
 print(f"naive sequential method on {cfg.simulator.self} with {cfg.sequential.number_of_iterations} iters and total budget: {cfg.sequential.total_simulation_budget}")
+print(f"aggregating data? {cfg.sequential.collate_last_iter_data}, varying lambda over its? {not cfg.sequential.lambda_stays_same}")
 for iteration in range(cfg.sequential.number_of_iterations):
     print(f"ITER: {iteration+1}/{cfg.sequential.number_of_iterations} fitting surrogate with {BUDGET_PER_ITERATION[iteration]} samples")
-    surro_train_domain = surro_train_domain_distribution.sample(BUDGET_PER_ITERATION[iteration]).detach() #detach needed!
-    surro_train_push_forward = simulator.sample(surro_train_domain) # invoking real simulator (budget!)
+    surro_domain, surro_push_forward = generate_data_for_surrogate(simulator,
+                                                                   surro_train_domain_distribution,
+                                                                   number=BUDGET_PER_ITERATION[iteration]
+                                                                  )
+    if iteration == 0:
+        (surro_train_push_forward, surro_train_domain), (surro_val_push_forward, surro_val_domain) = train_val_split(
+            surro_push_forward, surro_domain
+        )
+        # print(f"first iter tr. data θ: {surro_train_domain.shape}, x: {surro_train_push_forward.shape}")
+        # print(f"first iter val data θ: {surro_val_domain.shape}, x: {surro_val_push_forward.shape}")
     
-    train_dataset, val_dataset = create_train_val_dataloaders(
-        surro_train_push_forward, # observations: x
-        surro_train_domain,       #   parameters: θ
-    )
+    else:
+        # for subsequent iterations either collate or not
+        if cfg.sequential.collate_last_iter_data:
+            # concat data to (surro_train_push_forward, surro_train_domain), (surro_val_push_forward, surro_val_domain)
+            (surro_train_push_forward_new, surro_train_domain_new), (surro_val_push_forward_new, surro_val_domain_new) = train_val_split(
+                surro_push_forward, surro_domain
+            )
+            surro_train_domain = torch.cat((surro_train_domain, surro_train_domain_new), 0)
+            surro_train_push_forward = torch.cat((surro_train_push_forward, surro_train_push_forward_new), 0)
+
+            surro_val_domain = torch.cat((surro_val_domain, surro_val_domain_new), 0)
+            surro_val_push_forward = torch.cat((surro_val_push_forward, surro_val_push_forward_new), 0)
+            print(f"iter:{iteration+1} tr. data θ: {surro_train_domain.shape}, x: {surro_train_push_forward.shape}")
+            print(f"iter:{iteration+1} val data θ: {surro_val_domain.shape}, x: {surro_val_push_forward.shape}")
+        
+        else:
+            (surro_train_push_forward, surro_train_domain), (surro_val_push_forward, surro_val_domain) = train_val_split(
+                surro_push_forward, surro_domain
+            )
+            # print(f"iter:{iteration+1} tr. data θ: {surro_train_domain.shape}, x: {surro_train_push_forward.shape}")
+            # print(f"iter:{iteration+1} val data θ: {surro_val_domain.shape}, x: {surro_val_push_forward.shape}")
+
+    train_dataset = create_dataloader(surro_train_push_forward, surro_train_domain)
+    val_dataset = create_dataloader(surro_val_push_forward, surro_val_domain)
 
     train_loss, val_loss = fit_conditional_normalizing_flow(
         network=surrogate,
@@ -293,16 +325,7 @@ for iteration in range(cfg.sequential.number_of_iterations):
         print_every=5000, # don't print often
     )
 
-    train_losses.extend(train_loss); val_losses.extend(val_loss) # concatenate losses across iterations    
-    if iteration == cfg.sequential.number_of_iterations-1:
-        # only save the final surrogate
-        torch.save(
-            surrogate.state_dict(),
-            os.path.join(
-                cfg.base.base_path, cfg.base.folder, f"{cfg.base.tag}_surrogate_{iteration}.pt"
-            ),
-        )
-
+    train_losses.extend(train_loss); val_losses.extend(val_loss) # concatenate losses across iterations
     # evaluate the current surrogate
     surrogate.eval()
     with torch.no_grad():
@@ -512,7 +535,7 @@ for iteration in range(cfg.sequential.number_of_iterations):
 
 results_df = pd.DataFrame(
     {
-        "budgets": BUDGET_PER_ITERATION,
+        "budgets": BUDGET_PER_ITERATION, # this will be wrong collate_prev_iter_data is set to True
         "surro_c2sts": surro_c2sts,
         "surro_swds": surro_swds,
 
@@ -532,19 +555,19 @@ train_losses = np.array(train_losses)
 val_losses = np.array(val_losses)
 train_source_losses = np.array(train_source_losses)
 
-save_state_dict(
-    source,
-    f"{cfg.base.tag}_learned_final_source.pt",
-    folder=cfg.base.folder,
-    base_path=cfg.base.base_path,
-)
+# save_state_dict(
+#     source,
+#     f"{cfg.base.tag}_learned_final_source.pt",
+#     folder=cfg.base.folder,
+#     base_path=cfg.base.base_path,
+# )
 
-save_state_dict(
-    surrogate,
-    f"{cfg.base.tag}_final_surrogate.pt",
-    folder=cfg.base.folder,
-    base_path=cfg.base.base_path,
-)
+# save_state_dict(
+#     surrogate,
+#     f"{cfg.base.tag}_final_surrogate.pt",
+#     folder=cfg.base.folder,
+#     base_path=cfg.base.base_path,
+# )
 
 save_numpy_csv(
     train_losses,
