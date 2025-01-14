@@ -7,3 +7,5 @@ collate_last_iter_data: true # whether to cumulatively aggregate surrogate train
 lambda_stays_same: true      # keeps lambda fixed at fin_lambda for next iterations
 frontloading: false          # have more training samples for surrogate in the first iteration
 front_frac: 0.3              # use front_frac*budget samples in first iteration if frontloading is true
+number_of_sims_source: 500000 # how many observations to use to train the hodgkin huxley source? 1M takes too long
+
