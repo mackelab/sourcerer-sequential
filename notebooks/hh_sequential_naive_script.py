@@ -330,8 +330,8 @@ def generate_data_from_source(domain_distribution, number, xs_all, device):
 
 
 # # Load data and standardize to same scale as for training.
-cfg.source.xo_path = './full_batch.npz'
-npz = np.load(cfg.source.xo_path)
+xo_path = '/mnt/qb/work/macke/mwe102/sourcerer-sequential/notebooks/full_batch.npz'
+npz = np.load(xo_path)
 print(npz['theta'].shape); print(npz['stats'].shape)
 # data = read_pickle(cfg.source.xo_path)
 # print(data["X_o"].head())

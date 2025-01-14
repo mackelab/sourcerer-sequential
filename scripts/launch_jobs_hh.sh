@@ -1,0 +1,6 @@
+sbatch sequential_naive_benchmark_hh.sh 34358
+sbatch sequential_naive_benchmark_hh.sh 12235
+sbatch sequential_naive_benchmark_hh.sh 9656
+sbatch sequential_naive_benchmark_hh.sh 3828
+sbatch sequential_naive_benchmark_hh.sh 54973
+
