@@ -305,8 +305,8 @@ def generate_data_from_box_prior(number, xs_all, device):
     # print(nns_idx)
 
     surro_push_forward_norm = xs_all[nns_idx.long()]
-    return surro_theta_norm_gpu, surro_push_forward_norm.to(device)
-
+    #return surro_theta_norm_gpu, surro_push_forward_norm.to(device)
+    return params_gpu[nns_idx.long()], surro_push_forward_norm.to(device)
 
 def generate_data_from_source(domain_distribution, number, xs_all, device):
 
@@ -326,8 +326,9 @@ def generate_data_from_source(domain_distribution, number, xs_all, device):
     # print(nns_idx)
 
     surro_push_forward_norm = xs_all[nns_idx.long()]
-    return surro_theta_norm_gpu, surro_push_forward_norm.to(device)
-
+    #return surro_theta_norm_gpu, surro_push_forward_norm.to(device)
+    return params_gpu[nns_idx.long()], surro_push_forward_norm.to(device)
+    
 
 # # Load data and standardize to same scale as for training.
 xo_path = '/mnt/qb/work/macke/mwe102/sourcerer-sequential/notebooks/full_batch.npz'
