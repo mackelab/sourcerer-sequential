@@ -28,12 +28,21 @@ nvidia-smi # only if you requested gpus
 source /usr/lib/python3.6/site-packages/conda/shell/etc/profile.d/conda.sh
 conda activate /mnt/qb/work/macke/mwe102/.conda/sbi
 
+# this script is run from inside the scripts/ directory, go back to main directory
 cd ..
 
-# $1-seed
+# $1-seed $2-budget
 echo $1
+echo $2
 
 # Compute Phase
-srun python notebooks/hh_sequential_naive_script.py base.tag=run_500000_3_$1 base.folder=seq_hh_500000_3_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=500000 sequential.number_of_iterations=3
-srun python notebooks/hh_sequential_naive_script.py base.tag=run_500000_2_$1 base.folder=seq_hh_500000_2_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=500000 sequential.number_of_iterations=2
-srun python notebooks/hh_sequential_naive_script.py base.tag=run_500000_1_$1 base.folder=seq_hh_500000_1_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=500000 sequential.number_of_iterations=1
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_10_$1 base.folder=seq_hh_$2_10_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=10
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_8_$1 base.folder=seq_hh_$2_8_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=8
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_6_$1 base.folder=seq_hh_$2_6_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=6
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_5_$1 base.folder=seq_hh_$2_5_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=5
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_4_$1 base.folder=seq_hh_$2_4_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=4
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_3_$1 base.folder=seq_hh_$2_3_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=3
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_2_$1 base.folder=seq_hh_$2_2_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=2
+srun python notebooks/hh_sequential_naive_script.py base.tag=run_$2_1_$1 base.folder=seq_hh_$2_1_$1 surrogate=hh_train_surrogate base.seed=$1 source.fin_lambda=0.25 sequential.total_simulation_budget=$2 sequential.number_of_iterations=1
+
+
