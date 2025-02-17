@@ -5,7 +5,7 @@ The main algorithm is developed in [`notebooks/benchmark_sequential_naive_script
 
 The launching scripts are [`scripts/launch_jobs.sh`](https://github.com/mackelab/sourcerer-sequential/blob/main/scripts/launch_jobs.sh) and [`scripts/launch_jobs_hh.sh`](https://github.com/mackelab/sourcerer-sequential/blob/main/scripts/launch_jobs_hh.sh).
 
-All results and figures can be found in `results_analysis/` directory.
+All results and figures can be found in `results_analysis/` directory. Figures for the benchmark simulators are in the notebook [naive_seq_benchmark_results_25_11.ipynb](https://github.com/mackelab/sourcerer-sequential/blob/main/results_analysis/naive_seq_benchmark_results_25_11.ipynb) and Hodgkin-Huxley results are available in [naive_seq_benchmark_results_hh.ipynb](https://github.com/mackelab/sourcerer-sequential/blob/main/results_analysis/naive_seq_benchmark_results_hh.ipynb).
 
 
 # Sourcerer
