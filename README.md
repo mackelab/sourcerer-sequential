@@ -1,3 +1,13 @@
+# Sequential Source Density Estimation
+This repository develops a sequential extension of the source density estimation algorithm _Sourcerer_.
+
+The main algorithm is developed in [`notebooks/benchmark_sequential_naive_script.py`](https://github.com/mackelab/sourcerer-sequential/blob/main/notebooks/benchmark_sequential_naive_script.py) for the benchmark simulators, and in [`notebooks/hh_sequential_naive_script.py`](https://github.com/mackelab/sourcerer-sequential/blob/main/notebooks/hh_sequential_naive_script.py) for the Hodgkin-Huxley simulator. 
+
+The launching scripts are [`scripts/launch_jobs.sh`](https://github.com/mackelab/sourcerer-sequential/blob/main/scripts/launch_jobs.sh) and [`scripts/launch_jobs_hh.sh`](https://github.com/mackelab/sourcerer-sequential/blob/main/scripts/launch_jobs_hh.sh).
+
+All results and figures can be found in `results_analysis/` directory.
+
+
 # Sourcerer
 
 This is the repository for the paper ["Sourcerer: Sample-based Maximum Entropy Source Distribution Estimation"](https://arxiv.org/abs/2402.07808).
